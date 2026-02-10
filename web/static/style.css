@@ -1,0 +1,50 @@
+/* Вся зона приложения на весь экран */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* минимум высота = экран */
+}
+
+/* Каждая страница занимает оставшуюся высоту над навигацией */
+.page {
+    flex: 1;
+    display: none; /* скрытые по умолчанию */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Пример профиля */
+.profile {
+    background-color: rgb(14, 9, 9);
+    height: 100px;
+    width: 100px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(242, 233, 233);
+}
+
+/* Навигационная панель снизу */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    background-color: rgb(7, 4, 4);
+}
+
+/* Кнопки */
+.navbar button {
+    background: none;
+    border: none;
+    color: rgb(231, 225, 225);
+    font-size: 16px;
+}

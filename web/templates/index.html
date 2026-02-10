@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/web/static/style.css">
+</head>
+<body>
+    <!-- Обёртка на всю высоту -->
+    <div class="app">
+        <!-- Страницы -->
+        <div class="page" id="profile-page">
+            <div class="profile">
+                <p>Профиль</p>
+            </div>
+        </div>
+
+        <div class="page" id="tournaments-page">
+            <p>Турниры</p>
+        </div>
+
+        <div class="page" id="table-page">
+            <p>Таблица</p>
+        </div>
+
+        <!-- Навигация снизу -->
+        <div class="navbar">
+            <button onclick="showPage('tournaments')">Турниры</button>
+            <button onclick="showPage('table')">Таблица</button>
+            <button onclick="showPage('profile')">Профиль</button>
+        </div>
+    </div>
+
+    <script>
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            if(page === 'profile') document.getElementById('profile-page').style.display = 'flex';
+            if(page === 'tournaments') document.getElementById('tournaments-page').style.display = 'flex';
+            if(page === 'table') document.getElementById('table-page').style.display = 'flex';
+        }
+
+        showPage('profile');
+    </script>
+</body>
+</html>
