@@ -1,50 +1,120 @@
-/* Вся зона приложения на весь экран */
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0A1F44 0%, #2E3B7F 50%, #4E57B2 100%);
 }
 
 .app {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* минимум высота = экран */
+    min-height: 100vh;
 }
 
-/* Каждая страница занимает оставшуюся высоту над навигацией */
+
 .page {
     flex: 1;
-    display: none; /* скрытые по умолчанию */
-    justify-content: center;
-    align-items: center;
+    display: none;
+    flex-direction: column;
 }
 
-/* Пример профиля */
-.profile {
-    background-color: rgb(14, 9, 9);
-    height: 100px;
-    width: 100px;
+.page.active {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    width: 100%;
+    padding: 20px 10px 80px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tournaments,
+.table-block {
+    width: 100%;
+    min-height: 200px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
     border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(242, 233, 233);
+
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-/* Навигационная панель снизу */
+
+.profile,
+.tournaments,
+.table-block {
+    flex: 1;
+    width: 100%;
+    min-height: 200px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+
+
 .navbar {
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 60px;
-    background-color: rgb(7, 4, 4);
+    padding: 10px 0;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
-/* Кнопки */
+
 .navbar button {
-    background: none;
+    background: rgba(255, 255, 255, 0.25);
     border: none;
-    color: rgb(231, 225, 225);
+    border-radius: 12px;
+    padding: 10px 16px;
     font-size: 16px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.navbar button:hover {
+    background: rgba(255,255,255,0.40);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.28);
+}
+
+.navbar button:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.22);
 }
