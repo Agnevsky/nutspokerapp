@@ -1,28 +1,41 @@
 from aiogram import Router, F
 from aiogram.filters.command import CommandStart
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
-from db.request import add_user, get_info
+from aiogram.types import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    Message,
+    CallbackQuery,
+    ReplyKeyboardMarkup,
+    KeyboardButton
+)
 
-inline_kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Регистрация", callback_data="register")]])
+from db.request import add_user, get_user_by_tg_id
+from db.database import async_session_maker
 
-app_kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Открыть приложение", callback_data="open_app")]])
+router = Router()
+
+inline_kb = InlineKeyboardMarkup(
+    inline_keyboard=[[InlineKeyboardButton(text="Регистрация", callback_data="register")]]
+)
+
+app_kb = InlineKeyboardMarkup(
+    inline_keyboard=[[InlineKeyboardButton(text="Открыть приложение", callback_data="open_app")]]
+)
 
 contact_kb = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="📞 Отправить номер", request_contact=True)],
-    ],
+    keyboard=[[KeyboardButton(text="📞 Отправить номер", request_contact=True)]],
     resize_keyboard=True,
     one_time_keyboard=True
 )
 
 
-router = Router()
-
+# 🔹 Проверка регистрации
 @router.message(CommandStart())
 async def bot_start(message: Message):
     tg_id = message.from_user.id
 
-    user = await get_info(tg_id)
+    async with async_session_maker() as session:
+        user = await get_user_by_tg_id(session, tg_id)
 
     if user:
         await message.answer(
@@ -36,7 +49,7 @@ async def bot_start(message: Message):
         )
 
 
-
+# 🔹 Кнопка регистрации
 @router.callback_query(F.data == "register")
 async def register_user(callback: CallbackQuery):
     await callback.message.answer(
@@ -46,6 +59,7 @@ async def register_user(callback: CallbackQuery):
     await callback.answer()
 
 
+# 🔹 Получение контакта
 @router.message(F.contact)
 async def get_phone(message: Message):
     tg_id = message.from_user.id
@@ -57,7 +71,15 @@ async def get_phone(message: Message):
         await message.answer("Отправьте свой номер 😡")
         return
 
-    await add_user(tg_id, tg_number, tg_name, tg_username)
+    # ✅ Создаём сессию вручную
+    async with async_session_maker() as session:
+        await add_user(
+            session,
+            tg_id,
+            tg_number,
+            tg_name,
+            tg_username
+        )
 
     await message.answer(
         "✅ Регистрация завершена",

@@ -2,27 +2,30 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from db.decorator import connection
 from db.models import User
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-@connection
-async def add_user(tg_id: int, tg_number: int, tg_name: str, tg_username: str, session):
-
-    stmt = insert(User).values(
-        tg_id=tg_id,
-        tg_number=tg_number,
-        tg_name=tg_name,
-        tg_username=tg_username
-    ).on_conflict_do_nothing(
-        index_elements=["tg_id"]
+async def add_user(session: AsyncSession, tg_id: int, tg_number: int, tg_name: str, tg_username: str):
+    
+    stmt = (
+        insert(User)
+        .values(
+            tg_id=tg_id,
+            tg_number=tg_number,
+            tg_name=tg_name,
+            tg_username=tg_username
+        )
+        .on_conflict_do_nothing(
+            index_elements=["tg_id"]
+        )
     )
 
     await session.execute(stmt)
     await session.commit()
 
 
-@connection
-async def get_info(tg_id: int, session):
-
-    result = await session.execute(select(User).where(User.tg_id == tg_id))
-
+async def get_user_by_tg_id(session: AsyncSession, tg_id: int):
+    result = await session.execute(
+        select(User).where(User.tg_id == tg_id)
+    )
     return result.scalar_one_or_none()
